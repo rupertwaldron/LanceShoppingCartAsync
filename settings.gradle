@@ -4,4 +4,5 @@ include 'shop'
 include 'pricer'
 include 'stocker'
 include 'biller'
+include 'models'
 

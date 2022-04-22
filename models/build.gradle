@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+group 'com.ruppyrup'
+version '0.0.1-SNAPSHOT'
+
+dependencies {
+
+}
+
+bootJar {
+    enabled = false
+}
