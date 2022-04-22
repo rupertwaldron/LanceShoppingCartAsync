@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.ruppyrup'
+version '0.0.1-SNAPSHOT'
+
+dependencies {
+
+}
+
+mainClassName = 'cart.CartApplication'

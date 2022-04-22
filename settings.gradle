@@ -1,0 +1,7 @@
+rootProject.name = 'shoppingcart'
+include 'cart'
+include 'shop'
+include 'pricer'
+include 'stocker'
+include 'biller'
+
