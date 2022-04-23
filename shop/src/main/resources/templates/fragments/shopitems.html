@@ -13,9 +13,9 @@
     </div>
   </div>
 
-  <div class="row">
 
-    <form action="#" th:action="@{/selectitem}" method="post">
+  <form action="#" th:action="@{/selectitem}" method="post">
+    <div class="row">
       <div class="col-md-4" th:each="shopitem : ${shopitems}">
         <div class="card mb-4">
           <div class="card-body">
@@ -30,10 +30,9 @@
           </div>
         </div>
       </div>
-    </form>
+    </div>
+  </form>
 
-
-  </div>
 
   <h1>Add item</h1>
   <form action="#" th:action="@{/shopitems}" method="post" th:object="${pickeditem}">
@@ -45,7 +44,7 @@
 
     <br/>
 
-    <button type="submit">Submit</button>
+    <button type="submit">Add</button>
   </form>
 </div>
 
