@@ -28,8 +28,7 @@ public class ShopItemDao {
   }
 
   public void addShopItem(ShopItem shopItem) {
-    int nextId = shopItems.size() + 1;
-    shopItems.put((long) nextId, shopItem);
+    shopItems.put(shopItem.getId(), shopItem);
   }
 
   public void updateShopItem(Long id, ShopItem shopItem) {
