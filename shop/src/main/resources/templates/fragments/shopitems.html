@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<body>
+
+<div th:fragment="shopitems">
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Shop Items</h3>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-4" th:each="shopitem : ${shopitems}">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${shopitem.id}"></h5>
+          <h5 class="card-title" th:text="${shopitem.name}"></h5>
+          <span class="card-text" th:text="|£ ${shopitem.price}|"></span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <h1>Select item</h1>
+  <form action="#" th:action="@{/shopitems}" method="post" th:object="${pickeditem}">
+    <label>Id:</label>
+    <input type="number" th:field="*{id}"/><br/>
+
+    <label>Name:</label>
+    <input type="text" th:field="*{name}"/><br/>
+
+    <label>Price:</label>
+    <input type="number" th:field="*{price}"/><br/>
+
+    <br/>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+
+</body>
+</html>
