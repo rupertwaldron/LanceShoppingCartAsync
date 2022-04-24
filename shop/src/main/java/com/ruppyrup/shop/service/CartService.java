@@ -6,7 +6,7 @@ import com.ruppyrup.lance.models.DataMessage;
 import com.ruppyrup.lance.models.Message;
 import com.ruppyrup.lance.models.Topic;
 import com.ruppyrup.lance.publisher.Publisher;
-import com.ruppyrup.models.Cart;
+import com.ruppyrup.models.CartInputDto;
 import com.ruppyrup.models.ShopItem;
 import java.net.SocketException;
 import java.util.HashMap;
@@ -20,8 +20,11 @@ public class CartService {
 
   private final Publisher publisher;
 
-  public CartService(Publisher publisher) throws SocketException {
+  private final ShopperService shopperService;
+
+  public CartService(Publisher publisher, ShopperService shopperService) throws SocketException {
     this.publisher = publisher;
+    this.shopperService = shopperService;
     publisher.start();
   }
 
@@ -37,10 +40,14 @@ public class CartService {
     } else {
       cartItems.put(shopItem, 1);
     }
+
     Topic topic = new Topic("cart");
     String itemJson = null;
+
+    CartInputDto cartItem = new CartInputDto(shopItem, shopperService.getCurrentShopper());
+
     try {
-      itemJson = new ObjectMapper().writeValueAsString(shopItem);
+      itemJson = new ObjectMapper().writeValueAsString(cartItem);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }

@@ -5,12 +5,24 @@ import java.util.Map;
 
 public class Cart {
 
-  private Map<ShopItem, Integer> items = new HashMap<>();
+  private final Map<ShopItem, Integer> cartItems = new HashMap<>();
+
+  private final Shopper shopper;
 
   private double totalPrice;
   private double discout;
 
-  public Cart() {
+  public Cart(Shopper shopper) {
+    this.shopper = shopper;
+  }
+
+  public void addCartItem(final ShopItem shopItem) {
+    if (cartItems.containsKey(shopItem)) {
+      Integer quantity = cartItems.get(shopItem);
+      cartItems.replace(shopItem, ++quantity);
+    } else {
+      cartItems.put(shopItem, 1);
+    }
   }
 
   public double getTotalPrice() {

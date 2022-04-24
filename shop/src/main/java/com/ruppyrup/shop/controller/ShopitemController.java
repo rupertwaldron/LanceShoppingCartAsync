@@ -3,6 +3,7 @@ package com.ruppyrup.shop.controller;
 import com.ruppyrup.models.ShopItem;
 import com.ruppyrup.shop.dao.ShopItemDao;
 import com.ruppyrup.shop.service.CartService;
+import com.ruppyrup.shop.service.ShopperService;
 import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,14 +19,18 @@ public class ShopitemController {
 
   private final CartService cartService;
 
-  public ShopitemController(ShopItemDao shopItemDao, CartService cartService) {
+  private final ShopperService shopperService;
+
+  public ShopitemController(ShopItemDao shopItemDao, CartService cartService,
+      ShopperService shopperService) {
     this.shopItemDao = shopItemDao;
     this.cartService = cartService;
+    this.shopperService = shopperService;
   }
 
   // http://localhost:8080/shopitems
   @GetMapping("/shopitems")
-  public String listShopItems(Model model) {
+  public String listShopItems(final Model model) {
     ShopItem pickedItem = new ShopItem();
     model.addAttribute("pickeditem", pickedItem);
     model.addAttribute("shopitems", shopItemDao.findAllItems());
@@ -34,7 +39,7 @@ public class ShopitemController {
   }
 
   @PostMapping("/selectitem")
-  public String selectItem(Model model, @RequestParam(name = "item") int id) {
+  public String selectItem(final @RequestParam(name = "item") int id) {
     System.out.println("Id chosen :: " + id);
     Optional<ShopItem> shopItemById = shopItemDao.findShopItemById((long) id);
     shopItemById.ifPresent(cartService::addCartItem);
@@ -42,11 +47,11 @@ public class ShopitemController {
   }
 
   @PostMapping("/shopitems")
-  public String submitForm(@ModelAttribute("pickeditem") ShopItem shopItem) {
+  public String submitForm(final @ModelAttribute("pickeditem") ShopItem shopItem) {
     Long nextId = shopItemDao.findAllItems().size() + 1L;
-    shopItem.setId(nextId);
-    shopItemDao.addShopItem(shopItem);
-    System.out.println(shopItem);
+    ShopItem newShopItem = new ShopItem(nextId, shopItem.getName(), shopItem.getPrice());
+    shopItemDao.addShopItem(newShopItem);
+    System.out.println(newShopItem);
     return "redirect:/shopitems";
   }
 }

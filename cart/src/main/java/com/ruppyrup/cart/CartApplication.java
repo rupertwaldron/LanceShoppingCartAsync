@@ -1,6 +1,7 @@
 package com.ruppyrup.cart;
 
 import com.ruppyrup.cart.service.ShoppingCartService;
+import java.net.SocketException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +21,9 @@ public class CartApplication implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) {
-    service.shoppingPublish();
+  public void run(String... args) throws SocketException {
+    service.start();
+    service.subscribeToCart();
+    service.receiveMessagesFromCart();
   }
 }
