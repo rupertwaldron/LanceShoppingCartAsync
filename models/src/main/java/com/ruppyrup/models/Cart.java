@@ -1,19 +1,23 @@
 package com.ruppyrup.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ruppyrup.serializers.ShopItemDeSerializer;
+import com.ruppyrup.serializers.ShopItemSerializer;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
 public class Cart {
 
+  @JsonSerialize(keyUsing = ShopItemSerializer.class)
+  @JsonDeserialize(keyUsing = ShopItemDeSerializer.class)
   private final Map<ShopItem, Integer> cartItems = new HashMap<>();
 
-  private final Shopper shopper;
-
-  private double totalPrice;
-  private double discout;
-
-  public Cart(Shopper shopper) {
-    this.shopper = shopper;
+  public Cart() {
   }
 
   public void addCartItem(final ShopItem shopItem) {
@@ -23,21 +27,5 @@ public class Cart {
     } else {
       cartItems.put(shopItem, 1);
     }
-  }
-
-  public double getTotalPrice() {
-    return totalPrice;
-  }
-
-  public void setTotalPrice(double totalPrice) {
-    this.totalPrice = totalPrice;
-  }
-
-  public double getDiscout() {
-    return discout;
-  }
-
-  public void setDiscout(double discout) {
-    this.discout = discout;
   }
 }

@@ -15,6 +15,7 @@ import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.annotation.PreDestroy;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,6 +38,7 @@ public class ShoppingCartService {
     receivingMessages = true;
   }
 
+  @PreDestroy
   public void close() {
     receivingMessages = false;
     subscriber.close();
@@ -75,7 +77,7 @@ public class ShoppingCartService {
       if (shoppingCarts.containsKey(shopper)) {
         shoppingCarts.get(shopper).addCartItem(shopItem);
       } else {
-        Cart newCart = new Cart(shopper);
+        Cart newCart = new Cart();
         newCart.addCartItem(shopItem);
         shoppingCarts.put(shopper, newCart);
       }
