@@ -54,4 +54,10 @@ public class ShopitemController {
     System.out.println(newShopItem);
     return "redirect:/shopitems";
   }
+
+  @GetMapping("/cart")
+  public String cartItems(final Model model) {
+    model.addAttribute("cartitems", cartService.getCartItems());
+    return "cart";
+  }
 }

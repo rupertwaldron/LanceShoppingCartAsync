@@ -5,8 +5,12 @@
 <header th:fragment="header">
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
+            <a th:href="@{shopitems}" class="navbar-brand d-flex align-items-center">
                 <strong>My Shop</strong>
+            </a>
+
+            <a th:href="@{cart}" class="navbar-brand d-flex align-items-center">
+                <strong>Cart</strong>
             </a>
         </div>
     </div>
