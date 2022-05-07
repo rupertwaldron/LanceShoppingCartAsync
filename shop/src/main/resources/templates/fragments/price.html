@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<body>
+
+<div th:fragment="price">
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title" th:text="|Total Price £ ${price.total}"></h5>
+      <h5 class="card-text" th:text="|Discount ${price.discount}%|"></h5>
+      <hr>
+      <h4 class="card-text" th:text="|Discounted Price £ ${price.discountPrice}|"></h4>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

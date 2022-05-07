@@ -58,6 +58,7 @@ public class ShopitemController {
   @GetMapping("/cart")
   public String cartItems(final Model model) {
     model.addAttribute("cartitems", cartService.getCartItems());
+    model.addAttribute("price", cartService.getPrice());
     return "cart";
   }
 }
