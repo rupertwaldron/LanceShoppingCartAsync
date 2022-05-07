@@ -66,11 +66,11 @@ public class CartService {
   }
 
   private void handleMessage(Message message) {
-    if (message.getTopic().equals(priceupdateTopic)) {
+//    if (message.getTopic().equals(priceupdateTopic)) {
       handlePriceMessage(message);
-    } else if (message.getTopic().equals(cartupdateTopic)) {
+//    } else if (message.getTopic().equals(cartupdateTopic)) {
       handleCartMessage(message);
-    }
+//    }
   }
 
   public void addCartItem(ShopItem shopItem) {
@@ -96,6 +96,7 @@ public class CartService {
       price = mapper.readValue(contents, TotalPrice.class);
     } catch (JsonProcessingException e) {
       LOGGER.warning("Error deserializing totalprice object :: " + e.getMessage());
+      return;
     }
   }
 
@@ -109,6 +110,7 @@ public class CartService {
       updatedCart = mapper.readValue(contents, Cart.class);
     } catch (JsonProcessingException e) {
       LOGGER.warning("Error deserializing cart map :: " + e.getMessage());
+      return;
     }
     if (updatedCart == null) return;
     cartItems.clear();
