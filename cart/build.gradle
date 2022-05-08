@@ -10,4 +10,25 @@ dependencies {
     implementation project (':models')
 }
 
-mainClassName = 'cart.CartApplication'
+ext {
+    javaMainClass = "com.ruppyrup.cart.CartApplication"
+}
+
+application {
+    mainClassName = javaMainClass
+}
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": javaMainClass
+        )
+    }
+}
+
+task runWithExecJarExecutable(type: Exec) {
+    dependsOn jar
+    group = "Execution"
+    description = "Run the output executable jar with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get()
+}

@@ -14,4 +14,28 @@ dependencies {
     implementation 'org.webjars:jquery:3.6.0'
 }
 
-mainClassName = 'shop.ShopApplication'
+
+ext {
+    javaMainClass = "com.ruppyrup.shop.ShopApplication"
+}
+//mainClassName = 'shop.ShopApplication'
+
+application {
+    mainClassName = javaMainClass
+}
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": javaMainClass
+        )
+    }
+}
+
+
+task runWithExecJarExecutable(type: Exec) {
+    dependsOn jar
+    group = "Execution"
+    description = "Run the output executable jar with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get()
+}

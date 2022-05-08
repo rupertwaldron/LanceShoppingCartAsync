@@ -33,16 +33,12 @@ public class ShoppingCartService {
   }
 
   public void start() throws SocketException {
-//    subscriber.start();
-//    publisher.start();
     receivingMessages = true;
   }
 
   @PreDestroy
   public void close() {
     receivingMessages = false;
-//    subscriber.close();
-//    publisher.close();
   }
 
   public void subscribeToCart() {
