@@ -18,7 +18,7 @@ public class PriceHandler implements MessageHandler {
   public void handleMessage(Message message, CartService cartService) {
     LOGGER.info("Message received from update price :: " + message);
     String contents = message.getContents();
-    if (!contents.contains("total")) return;
+//    if (!contents.contains("total")) return;
     try {
       cartService.setPrice(mapper.readValue(contents, TotalPrice.class));
     } catch (JsonProcessingException e) {

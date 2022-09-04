@@ -22,7 +22,7 @@ public class CartHandler implements MessageHandler {
   public void handleMessage(Message message, CartService cartService) {
     LOGGER.info("Message received from update cart :: " + message);
     String contents = message.getContents();
-    if (!contents.contains("cartitems")) return;
+//    if (!contents.contains("cartitems")) return;
     TypeReference<HashMap<ShopItem, Integer>> typeRef = new TypeReference<>() {};
     Map<ShopItem, Integer> cartMap = null;
     Cart updatedCart;
