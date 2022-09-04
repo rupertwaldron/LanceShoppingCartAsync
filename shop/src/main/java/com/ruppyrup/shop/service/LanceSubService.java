@@ -1,17 +1,11 @@
 package com.ruppyrup.shop.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruppyrup.lance.models.Message;
 import com.ruppyrup.lance.models.Topic;
-import com.ruppyrup.lance.publisher.Publisher;
 import com.ruppyrup.lance.subscriber.Subscriber;
-import com.ruppyrup.models.Cart;
-import com.ruppyrup.models.ShopItem;
-import com.ruppyrup.models.TotalPrice;
-import java.util.HashMap;
-import java.util.Map;
+import com.ruppyrup.shop.handlers.MessageHandler;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import lombok.Getter;
@@ -26,17 +20,20 @@ public class LanceSubService {
 
   private final Subscriber subscriber;
   private final CartService cartService;
+  private final List<MessageHandler> handlers;
   private final ObjectMapper mapper = new ObjectMapper();
   private final Topic cartupdateTopic = new Topic("cartupdate");
   private final Topic priceupdateTopic = new Topic("priceupdate");
 
-  public LanceSubService(Subscriber subscriber, CartService cartService){
+  public LanceSubService(Subscriber subscriber, CartService cartService,
+      List<MessageHandler> handlers){
     this.subscriber = subscriber;
     this.cartService = cartService;
+    this.handlers = handlers;
     subscriber.subscribe(this.getClass().getSimpleName(), cartupdateTopic);
     subscriber.subscribe(this.getClass().getSimpleName(), priceupdateTopic);
 
-    CompletableFuture.runAsync(() -> {
+    CompletableFuture<Void> subcf = CompletableFuture.runAsync(() -> {
           Flux<Message> udpFlux = subscriber.createUdpFlux();
 
           udpFlux
@@ -48,36 +45,10 @@ public class LanceSubService {
                   });
         }
     );
+//    subcf.join();
   }
 
   private void handleMessage(Message message) {
-      handlePriceMessage(message, cartService);
-      handleCartMessage(message, cartService);
-  }
-
-  private void handlePriceMessage(Message message, CartService cartService) {
-    LOGGER.info("Message received from update price :: " + message);
-    String contents = message.getContents();
-    try {
-      cartService.setPrice(mapper.readValue(contents, TotalPrice.class));
-    } catch (JsonProcessingException e) {
-      LOGGER.warning("Error deserializing totalprice object :: " + e.getMessage());
-    }
-  }
-
-  private void handleCartMessage(Message message, CartService cartService) {
-    LOGGER.info("Message received from update cart :: " + message);
-    String contents = message.getContents();
-    TypeReference<HashMap<ShopItem, Integer>> typeRef = new TypeReference<>() {};
-    Map<ShopItem, Integer> cartMap = null;
-    Cart updatedCart;
-    try {
-      updatedCart = mapper.readValue(contents, Cart.class);
-    } catch (JsonProcessingException e) {
-      LOGGER.warning("Error deserializing cart map :: " + e.getMessage());
-      return;
-    }
-    if (updatedCart == null) return;
-    cartService.processMessage(updatedCart.getCartItems());
+      handlers.forEach(handler -> handler.handleMessage(message, cartService));
   }
 }
